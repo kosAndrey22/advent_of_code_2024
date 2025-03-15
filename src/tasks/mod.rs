@@ -1,7 +1,11 @@
-pub mod task01;
+mod task01;
 
-pub trait TaskTrait {
-  fn run() {
-    println!("Implementing is in progress");
-  }
+trait TaskTrait {
+    fn run() {
+        println!("Implementing is in progress");
+    }
+}
+
+pub fn run_all() {
+    task01::Task::run();
 }
