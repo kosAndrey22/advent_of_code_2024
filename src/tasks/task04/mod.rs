@@ -48,7 +48,7 @@ impl Task {
 
                 for direction in DIRECTIONS_ARRAY {
                     let is_match =
-                        Task::start_check(&Point(x as i16, y as i16), &direction, &symbol_matrix, 1);
+                        Task::check_for_word_by_direction(&Point(x as i16, y as i16), &direction, &symbol_matrix, 1);
                     if is_match {
                         total_count += 1;
                     }
@@ -59,7 +59,7 @@ impl Task {
         println!("Task 4, part 1 answer is {total_count}");
     }
 
-    fn start_check(
+    fn check_for_word_by_direction(
         point: &Point,
         direction: &Direction,
         symbol_matrix: &Vec<Vec<char>>,
@@ -81,7 +81,7 @@ impl Task {
             return true;
         }
 
-        return Task::start_check(
+        return Task::check_for_word_by_direction(
             &Point(next_x, next_y),
             direction,
             &symbol_matrix,
