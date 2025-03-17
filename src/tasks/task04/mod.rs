@@ -46,10 +46,9 @@ impl Task {
                     continue;
                 }
 
-
                 for direction in DIRECTIONS_ARRAY {
                     let is_match =
-                        Task::start_check(Point(x as i16, y as i16), direction, &symbol_matrix, 1);
+                        Task::start_check(&Point(x as i16, y as i16), &direction, &symbol_matrix, 1);
                     if is_match {
                         total_count += 1;
                     }
@@ -61,12 +60,41 @@ impl Task {
     }
 
     fn start_check(
-        point: Point,
-        direction: Direction,
+        point: &Point,
+        direction: &Direction,
         symbol_matrix: &Vec<Vec<char>>,
         next_symbol_index: i32,
     ) -> bool {
-        let Point(x, y) = point;
+        let next_cords = Task::get_next_cords(point, &direction, &symbol_matrix);
+        if next_cords.is_none() {
+            return false;
+        }
+        let Point(next_x, next_y) = next_cords.unwrap();
+
+        let next_symbol = symbol_matrix[next_x as usize][next_y as usize];
+        if next_symbol != WORD[next_symbol_index as usize] {
+            return false;
+        }
+
+        let is_last = next_symbol_index == (WORD.len() as i32) - 1;
+        if is_last {
+            return true;
+        }
+
+        return Task::start_check(
+            &Point(next_x, next_y),
+            direction,
+            &symbol_matrix,
+            next_symbol_index + 1,
+        );
+    }
+
+    fn get_next_cords(
+        point: &Point,
+        direction: &Direction,
+        symbol_matrix: &Vec<Vec<char>>,
+    ) -> Option<Point> {
+        let &Point(x, y) = point;
 
         let (next_x, next_y) = match direction {
             Direction::Up => (x - 1, y),
@@ -83,25 +111,10 @@ impl Task {
         let next_y_valid = next_y >= 0 && next_y < symbol_matrix[x as usize].len() as i16;
 
         if !next_x_valid || !next_y_valid {
-            return false;
+            return None;
         }
 
-        let next_symbol = symbol_matrix[next_x as usize][next_y as usize];
-        if next_symbol != WORD[next_symbol_index as usize] {
-            return false;
-        }
-
-        let is_last = next_symbol_index == (WORD.len() as i32) - 1;
-        if is_last {
-            return true;
-        }
-
-        return Task::start_check(
-            Point(next_x, next_y),
-            direction,
-            &symbol_matrix,
-            next_symbol_index + 1,
-        );
+        return Option::Some(Point(next_x, next_y));
     }
 
     fn get_input() -> Vec<Vec<char>> {
