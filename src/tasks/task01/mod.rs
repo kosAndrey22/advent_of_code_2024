@@ -4,8 +4,8 @@ use std::{collections::HashMap, fs};
 pub struct Task;
 
 impl Task {
-    fn part1() {
-        let (list1, list2) = Task::get_sorted_lists();
+    fn part1(&self) {
+        let (list1, list2) = self.get_sorted_lists();
 
         let total_pairs = list1.len();
 
@@ -20,8 +20,8 @@ impl Task {
         println!("Task 1, part 1 answer is {total_diff}");
     }
 
-    fn part2() {
-        let (list1, list2) = Task::get_sorted_lists();
+    fn part2(&self) {
+        let (list1, list2) = self.get_sorted_lists();
 
         let mut list2_map: HashMap<i32, i32> = HashMap::new();
 
@@ -40,7 +40,7 @@ impl Task {
         println!("Task 1, part 2 answer is {total_sum}");
     }
 
-    fn get_sorted_lists() -> (Vec<i32>, Vec<i32>) {
+    fn get_sorted_lists(&self) -> (Vec<i32>, Vec<i32>) {
         let input = fs::read_to_string("src/tasks/task01/input.txt").unwrap();
 
         let mut list1: Vec<i32> = Vec::new();
@@ -61,8 +61,8 @@ impl Task {
 }
 
 impl TaskTrait for Task {
-    fn run() {
-        Task::part1();
-        Task::part2();
+    fn run(&self) {
+        self.part1();
+        self.part2();
     }
 }

@@ -4,18 +4,38 @@ mod task03;
 mod task04;
 
 trait TaskTrait {
-    fn run() {
+    fn run(&self) {
         println!("Implementing is in progress");
     }
 }
 
-pub fn run_all() {
-    task01::Task::run();
-    task02::Task::run();
-    task03::Task::run();
-    task04::Task::run();
+pub struct TasksModule {
+    tasks: Vec<Box<dyn TaskTrait>>,
 }
 
-pub fn run_last() {
-    task04::Task::run();
+impl TasksModule {
+    pub fn create() -> Self {
+        let mut tasks: Vec<Box<dyn TaskTrait>> = Vec::new();
+
+        tasks.push(Box::new(task01::Task));
+        tasks.push(Box::new(task02::Task));
+        tasks.push(Box::new(task03::Task));
+        tasks.push(Box::new(task04::Task));
+
+        TasksModule {
+            tasks
+        }
+    }
+
+    pub fn run_all(&self) {
+        for task in &self.tasks {
+            task.run();
+        }
+    }
+
+    pub fn run_last(&self) {
+        let tasks_length = self.tasks.len();
+        let last_task = &self.tasks[tasks_length - 1];
+        last_task.run();
+    }
 }

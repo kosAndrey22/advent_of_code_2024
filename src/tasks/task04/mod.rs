@@ -31,8 +31,8 @@ const DIRECTIONS_ARRAY: [Direction; 8] = [
 ];
 
 impl Task {
-    fn part1() {
-        let symbol_matrix = Task::get_input();
+    fn part1(&self) {
+        let symbol_matrix = self.get_input();
 
         let mut total_count = 0;
 
@@ -48,7 +48,7 @@ impl Task {
 
                 for direction in DIRECTIONS_ARRAY {
                     let is_match =
-                        Task::check_for_word_by_direction(&Point(x as i16, y as i16), &direction, &symbol_matrix, 1);
+                        self.check_for_word_by_direction(&Point(x as i16, y as i16), &direction, &symbol_matrix, 1);
                     if is_match {
                         total_count += 1;
                     }
@@ -60,12 +60,13 @@ impl Task {
     }
 
     fn check_for_word_by_direction(
+        &self,
         point: &Point,
         direction: &Direction,
         symbol_matrix: &Vec<Vec<char>>,
         next_symbol_index: i32,
     ) -> bool {
-        let next_cords = Task::get_next_cords(point, &direction, &symbol_matrix);
+        let next_cords = self.get_next_cords(point, &direction, &symbol_matrix);
         if next_cords.is_none() {
             return false;
         }
@@ -81,7 +82,7 @@ impl Task {
             return true;
         }
 
-        return Task::check_for_word_by_direction(
+        return self.check_for_word_by_direction(
             &Point(next_x, next_y),
             direction,
             &symbol_matrix,
@@ -90,6 +91,7 @@ impl Task {
     }
 
     fn get_next_cords(
+        &self,
         point: &Point,
         direction: &Direction,
         symbol_matrix: &Vec<Vec<char>>,
@@ -117,7 +119,7 @@ impl Task {
         return Option::Some(Point(next_x, next_y));
     }
 
-    fn get_input() -> Vec<Vec<char>> {
+    fn get_input(&self) -> Vec<Vec<char>> {
         let input = fs::read_to_string("src/tasks/task04/input.txt").unwrap();
         let mut matrix: Vec<Vec<char>> = Vec::new();
 
@@ -136,8 +138,8 @@ impl Task {
 }
 
 impl TaskTrait for Task {
-    fn run() {
-        Task::part1();
+    fn run(&self) {
+        self.part1();
         // Task::part2();
     }
 }

@@ -14,14 +14,16 @@ fn main() {
         }
     }
 
+    let task_module = tasks::TasksModule::create();
+
     if run_all {
         println!("Starting advent of code");
-        tasks::run_all();
+        task_module.run_all();
         println!("End!");
         return;
     }
 
     println!("Running last task");
-    tasks::run_last();
+    task_module.run_last();
     println!("End!");
 }

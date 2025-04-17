@@ -7,8 +7,8 @@ use super::TaskTrait;
 pub struct Task;
 
 impl Task {
-    fn part1() {
-        let input = Task::get_input();
+    fn part1(&self) {
+        let input = self.get_input();
         // let regex = Regex::new(r"mul\([0-9]{3}\)").unwrap();
         let regex = Regex::new(r"mul\((?<f>[0-9]{1,3}),(?<s>[0-9]{1,3})\)").unwrap();
         let pairs: Vec<(i32, i32)> = regex
@@ -29,8 +29,8 @@ impl Task {
         println!("Task 3, part 1 answer is {total_amount}");
     }
 
-    fn part2() {
-        let input = Task::get_input();
+    fn part2(&self) {
+        let input = self.get_input();
 
         let regex = Regex::new(r"mul\([0-9]{1,3},[0-9]{1,3}\)|do\(\)|don't\(\)").unwrap();
         let matches: Vec<&str> = regex.find_iter(&input).map(|m| m.as_str()).collect();
@@ -62,15 +62,15 @@ impl Task {
         println!("Task 3, part 2 answer is {total_amount}");
     }
 
-    fn get_input() -> String {
+    fn get_input(&self) -> String {
         let input = fs::read_to_string("src/tasks/task03/input.txt").unwrap();
         input
     }
 }
 
 impl TaskTrait for Task {
-    fn run() {
-        Task::part1();
-        Task::part2();
+    fn run(&self) {
+        self.part1();
+        self.part2();
     }
 }
