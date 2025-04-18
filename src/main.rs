@@ -14,7 +14,7 @@ fn main() {
         }
     }
 
-    let task_module = tasks::TasksModule::create();
+    let mut task_module = tasks::TasksModule::create();
 
     if run_all {
         println!("Starting advent of code");

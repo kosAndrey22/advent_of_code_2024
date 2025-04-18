@@ -1,15 +1,21 @@
 use super::TaskTrait;
 use std::{cmp::Ordering, fs};
 
-pub struct Task;
+pub struct Task {
+    reports: Vec<Vec<u8>>
+}
 
 impl Task {
-    fn part1(&self) {
-        let reports = self.get_reports();
+    pub fn create() -> Self {
+        return Task {
+            reports: Vec::new(),
+        };
+    }
 
+    fn part1(&self) {
         let mut safe_amount = 0;
 
-        for report in reports {
+        for report in &self.reports {
             let is_safe = self.check_report(report, false, false);
 
             if is_safe {
@@ -21,11 +27,9 @@ impl Task {
     }
 
     fn part2(&self) {
-        let reports = self.get_reports();
-
         let mut safe_amount = 0;
 
-        for report in reports {
+        for report in &self.reports {
             let is_safe = self.check_report(report, true, false);
 
             if is_safe {
@@ -36,7 +40,7 @@ impl Task {
         println!("Task 2, part 2 answer is {safe_amount}");
     }
 
-    fn check_report(&self, report: Vec<u8>, use_problem_dampener: bool, problem_dampener_used: bool) -> bool {
+    fn check_report(&self, report: &Vec<u8>, use_problem_dampener: bool, problem_dampener_used: bool) -> bool {
         if report.len() == 1 {
             return true;
         }
@@ -66,7 +70,7 @@ impl Task {
                   let mut cloned_report = report.clone();
                   cloned_report.remove(index_to_remove);
 
-                  let result = self.check_report(cloned_report, true, true);
+                  let result = self.check_report(&cloned_report, true, true);
 
                   results.push(result);
                 }
@@ -80,7 +84,7 @@ impl Task {
         return true;
     }
 
-    fn get_reports(&self) -> Vec<Vec<u8>> {
+    fn init(&mut self) {
         let input = fs::read_to_string("src/tasks/task02/input.txt").unwrap();
 
         let mut reports: Vec<Vec<u8>> = Vec::new();
@@ -97,12 +101,14 @@ impl Task {
             reports.push(parsed_number);
         }
 
-        reports
+        self.reports = reports;
     }
 }
 
 impl TaskTrait for Task {
-    fn run(&self) {
+    fn run(&mut self) {
+        self.init();
+
         self.part1();
         self.part2();
     }

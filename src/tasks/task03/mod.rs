@@ -4,15 +4,21 @@ use regex::Regex;
 
 use super::TaskTrait;
 
-pub struct Task;
+pub struct Task {
+    input: String
+}
 
 impl Task {
+    pub fn create() -> Self {
+        return Task {
+            input: String::new(),
+        };
+    }
+
     fn part1(&self) {
-        let input = self.get_input();
-        // let regex = Regex::new(r"mul\([0-9]{3}\)").unwrap();
         let regex = Regex::new(r"mul\((?<f>[0-9]{1,3}),(?<s>[0-9]{1,3})\)").unwrap();
         let pairs: Vec<(i32, i32)> = regex
-            .captures_iter(&input)
+            .captures_iter(&&self.input)
             .map(|caps| {
                 let first: i32 = caps.name("f").unwrap().as_str().parse().unwrap();
                 let second: i32 = caps.name("s").unwrap().as_str().parse().unwrap();
@@ -30,10 +36,8 @@ impl Task {
     }
 
     fn part2(&self) {
-        let input = self.get_input();
-
         let regex = Regex::new(r"mul\([0-9]{1,3},[0-9]{1,3}\)|do\(\)|don't\(\)").unwrap();
-        let matches: Vec<&str> = regex.find_iter(&input).map(|m| m.as_str()).collect();
+        let matches: Vec<&str> = regex.find_iter(&self.input).map(|m| m.as_str()).collect();
 
         let mut total_amount = 0;
         let mut enabled = true;
@@ -62,14 +66,16 @@ impl Task {
         println!("Task 3, part 2 answer is {total_amount}");
     }
 
-    fn get_input(&self) -> String {
+    fn init(&mut self) {
         let input = fs::read_to_string("src/tasks/task03/input.txt").unwrap();
-        input
+        self.input = input;
     }
 }
 
 impl TaskTrait for Task {
-    fn run(&self) {
+    fn run(&mut self) {
+        self.init();
+
         self.part1();
         self.part2();
     }

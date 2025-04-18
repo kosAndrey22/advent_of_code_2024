@@ -1,11 +1,19 @@
 use super::TaskTrait;
 use std::{collections::HashMap, fs};
 
-pub struct Task;
+pub struct Task {
+    sorted_lists: (Vec<i32>, Vec<i32>)
+}
 
 impl Task {
+    pub fn create() -> Self {
+        return Task {
+            sorted_lists: (Vec::new(), Vec::new()),
+        };
+    }
+
     fn part1(&self) {
-        let (list1, list2) = self.get_sorted_lists();
+        let (list1, list2) = &self.sorted_lists;
 
         let total_pairs = list1.len();
 
@@ -21,13 +29,13 @@ impl Task {
     }
 
     fn part2(&self) {
-        let (list1, list2) = self.get_sorted_lists();
+        let (list1, list2) = &self.sorted_lists;
 
         let mut list2_map: HashMap<i32, i32> = HashMap::new();
 
         for number in list2 {
             let count = list2_map.get(&number).unwrap_or(&0);
-            list2_map.insert(number, count + 1);
+            list2_map.insert(*number, count + 1);
         }
 
         let mut total_sum = 0;
@@ -40,7 +48,7 @@ impl Task {
         println!("Task 1, part 2 answer is {total_sum}");
     }
 
-    fn get_sorted_lists(&self) -> (Vec<i32>, Vec<i32>) {
+    fn init(&mut self) {
         let input = fs::read_to_string("src/tasks/task01/input.txt").unwrap();
 
         let mut list1: Vec<i32> = Vec::new();
@@ -56,12 +64,14 @@ impl Task {
         list1.sort();
         list2.sort();
 
-        (list1, list2)
+        self.sorted_lists = (list1, list2);
     }
 }
 
 impl TaskTrait for Task {
-    fn run(&self) {
+    fn run(&mut self) {
+        self.init();
+
         self.part1();
         self.part2();
     }
