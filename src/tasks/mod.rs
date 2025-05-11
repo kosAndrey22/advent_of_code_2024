@@ -2,6 +2,7 @@ mod task01;
 mod task02;
 mod task03;
 mod task04;
+mod task05;
 
 trait TaskTrait {
     fn run(&mut self) {
@@ -21,6 +22,7 @@ impl TasksModule {
         tasks.push(Box::new(task02::Task::create()));
         tasks.push(Box::new(task03::Task::create()));
         tasks.push(Box::new(task04::Task::create()));
+        tasks.push(Box::new(task05::Task::create()));
 
         TasksModule {
             tasks
